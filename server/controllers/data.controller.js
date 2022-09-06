@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { createUser } from '../services/users.services.js';
 import AppError from '../utils/AppError.js';
 import catchAsync from '../utils/catchAsync.js';
 
@@ -12,6 +13,12 @@ export const create = catchAsync(async (req, res) => {
   ).map(collection => collection.name);
   if (!existedCollection.includes(targetCollection))
     throw new AppError(400, 'Collection does not exists');
+
+  //if the collection is users then create the doc using the 'User' model
+  if (targetCollection == 'users') {
+    const user = await createUser(req.body);
+    return res.status(201).json({ status: 'success', message: 'user created successfully', user });
+  }
 
   //save the data on database
   await db.collection(targetCollection).insertOne(req.body);
