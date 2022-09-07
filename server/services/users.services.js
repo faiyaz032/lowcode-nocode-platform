@@ -8,3 +8,11 @@ export const createUser = async data => {
     throw error;
   }
 };
+
+export const getUser = async id => {
+  try {
+    return User.findById(id);
+  } catch (error) {
+    throw error;
+  }
+};

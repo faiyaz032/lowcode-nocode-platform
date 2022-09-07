@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import { createPermission } from '../services/permissions.services.js';
+import { createRole } from '../services/roles.services.js';
 import { createUser } from '../services/users.services.js';
 import AppError from '../utils/AppError.js';
 import catchAsync from '../utils/catchAsync.js';
@@ -18,6 +20,18 @@ export const create = catchAsync(async (req, res) => {
   if (targetCollection == 'users') {
     const user = await createUser(req.body);
     return res.status(201).json({ status: 'success', message: 'user created successfully', user });
+  }
+
+  if (targetCollection == 'permissions') {
+    const permission = await createPermission(req.body);
+    return res
+      .status(201)
+      .json({ status: 'success', message: 'permission created successfully', permission });
+  }
+
+  if (targetCollection == 'roles') {
+    const role = await createRole(req.body);
+    return res.status(201).json({ status: 'success', message: 'role created successfully', role });
   }
 
   //save the data on database
