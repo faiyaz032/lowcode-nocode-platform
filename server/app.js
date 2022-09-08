@@ -13,12 +13,12 @@ app.use(express.json());
 
 //!Just a check route to check the middleware. Will be removed later
 app.get('/check/:collection/:docId', checkPermission, (req, res) => {
-  res.send('hitting');
+  res.send('games');
 });
 
-app.post('/check/:collection', checkPermission, (req, res) => {
-  res.send('posted');
-});
+// app.post('/check/:collection', checkPermission, (req, res) => {
+//   res.send('posted');
+// });
 
 app.use('/api', crudRouter);
 app.use('/api', dataRouter);

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { getCrudsModelData } from '../services/data.services.js';
 import { createPermission } from '../services/permissions.services.js';
 import { createRole } from '../services/roles.services.js';
 import { createUser } from '../services/users.services.js';
@@ -51,6 +52,23 @@ export const get = catchAsync(async (req, res) => {
   ).map(collection => collection.name);
   if (!existedCollection.includes(targetCollection))
     throw new AppError(400, 'Collection does not exists');
+
+  //check if the req if its from game engine
+  if (req.isFromGameEngine) {
+    //get the fields from model-cruds
+    const { inputFields } = await getCrudsModelData(targetCollection);
+    //map the object like {field:1}
+    const fieldsToReturn = inputFields.reduce((acc, curr) => {
+      if (curr.irq === true) acc[curr.name] = 1;
+      return acc;
+    }, {});
+    //query data from the database
+    const data = await db.collection(targetCollection).find().project(fieldsToReturn).toArray();
+    //send response
+    return res
+      .status(200)
+      .json({ status: 'success', message: 'Data fetched successfully', data: data });
+  }
 
   //get the data from the database
   const data = await db.collection(targetCollection).find().toArray();

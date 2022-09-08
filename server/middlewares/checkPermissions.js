@@ -24,6 +24,8 @@ const checkPermission = catchAsync(async (req, res, next) => {
       return documentRef === docId;
     });
 
+    if (!correspondingPerm) throw new AppError(401, 'You are not permitted to access this data.');
+
     if (!correspondingPerm.actions.includes('read'))
       throw new AppError(401, 'You are not permitted.');
 
@@ -32,9 +34,11 @@ const checkPermission = catchAsync(async (req, res, next) => {
 
   //check if permission contains the corresponding action
   permissions.forEach(permission => {
-    const { collectionName, actions } = permission;
+    const { collectionName, actions, docRef } = permission;
     if (collectionName !== collection)
-      throw new AppError(400, 'Collection does not match. You are not permitted!');
+      throw new AppError(401, 'Collection does not match. You are not permitted!');
+
+    if (docRef !== null) throw new AppError(401, 'You are not permitted to access this data');
 
     if (req.method === 'GET') {
       if (!actions.includes('read'))
