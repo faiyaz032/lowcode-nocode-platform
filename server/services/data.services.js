@@ -9,3 +9,13 @@ export const getCrudsModelData = async modelName => {
     throw error;
   }
 };
+
+export const getIQVFields = async targetCollection => {
+  const { inputFields } = await getCrudsModelData(targetCollection);
+
+  return inputFields
+    .filter(inputField => {
+      if (inputField.iqv === true) return inputField.name;
+    })
+    .map(inputField => inputField.name);
+};

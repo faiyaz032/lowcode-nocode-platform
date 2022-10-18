@@ -59,7 +59,7 @@ export const get = catchAsync(async (req, res) => {
     const { inputFields } = await getCrudsModelData(targetCollection);
     //map the object like {field:1}
     const fieldsToReturn = inputFields.reduce((acc, curr) => {
-      if (curr.irq === true) acc[curr.name] = 1;
+      if (curr.irq === true) [curr.name] = 1;
       return acc;
     }, {});
     //query data from the database
@@ -71,7 +71,7 @@ export const get = catchAsync(async (req, res) => {
   }
 
   //get the data from the database
-  const data = await db.collection(targetCollection).find().toArray();
+  const data = await db.collection(targetCollection).find(req.query).toArray();
 
   //send response
   res.status(200).json({ status: 'success', message: 'Data fetched successfully', data: data });

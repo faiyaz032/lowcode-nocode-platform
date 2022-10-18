@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import * as dataController from '../controllers/data.controller.js';
-import checkAgent from '../middlewares/checkAgent.js';
+import checkIQVFields from '../middlewares/checkIQVFields.js';
 
 const router = Router();
 
-router.get('/data/:targetCollection/:id', dataController.getById);
+router.get('/data/:targetCollection/:id', checkIQVFields, dataController.getById);
+
 router.post('/data/:targetCollection', dataController.create);
-router.get('/data/:targetCollection', checkAgent, dataController.get);
+router.get('/data/:targetCollection', checkIQVFields, dataController.get);
 
 export default router;
