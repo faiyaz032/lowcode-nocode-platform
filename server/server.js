@@ -6,7 +6,7 @@ function connectDatabase() {
   console.log('Database connected successfully');
 }
 
-const PORT = 5000 || process.env.PORT;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   connectDatabase();
   console.log(`Server is alive on PORT:${PORT}`);

@@ -1,3 +1,4 @@
+import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import checkPermission from './middlewares/checkPermissions.js';
@@ -11,14 +12,24 @@ dotenv.config();
 
 app.use(express.json());
 
+app.use(
+  cors({
+    origin: '*',
+  })
+);
+
 //!Just a check route to check the middleware. Will be removed later
 app.get('/check/:collection/:docId', checkPermission, (req, res) => {
-  res.send('games');
+  res.send('Playing valorant');
 });
 
-// app.post('/check/:collection', checkPermission, (req, res) => {
-//   res.send('posted');
+// app.get('/check/:collection', checkPermission, (req, res) => {
+//   res.send('you are playing all the games');
 // });
+
+app.get('/', (req, res) => {
+  res.send('Welcome to modular admin panel. DATABASE');
+});
 
 app.use('/api', crudRouter);
 app.use('/api', dataRouter);

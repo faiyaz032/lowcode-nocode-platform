@@ -1,20 +1,24 @@
 import mongoose from 'mongoose';
+import slugify from 'slugify';
 import ModelExist from '../models/ModelExist.js';
 import AppError from '../utils/AppError.js';
 import catchAsync from '../utils/catchAsync.js';
 import createModel from '../utils/createModel.js';
 
 export const create = catchAsync(async (req, res) => {
+  //slugify the model name to avoid any space
+  const modelName = slugify(req.body.crudName, { lower: true });
+
   //create the requested crud model
-  const Model = createModel(`${req.body.crudName}-crud`);
-  const model = new Model(req.body);
+  const Model = createModel(`${modelName}-crud`);
+  const model = new Model({ ...req.body, crudName: modelName });
   await model.save();
 
   //save record on the model is created
   await ModelExist.create({ exists: true, crudName: model.crudName });
 
   //create a data model
-  createModel(`${req.body.crudName}`);
+  createModel(modelName);
 
   //send response
   res.status(201).json({ data: model });
@@ -30,4 +34,30 @@ export const get = catchAsync(async (req, res) => {
 
   //send response
   res.status(200).json(data);
+});
+
+//TODO: include show in add menu
+export const getAllCrudsItem = catchAsync(async (req, res) => {
+  const crudItems = await (
+    await ModelExist.find({ exists: true })
+  ).map(collection => collection.crudName);
+
+  return res.status(200).json({ crudItems });
+});
+
+export const deleteCrudItem = catchAsync(async (req, res) => {
+  const { db } = mongoose.connection;
+
+  const found = await db.collection(`${req.params.crudName}-cruds`).findOne();
+
+  if (!found) throw new AppError(400, 'No collection found');
+
+  await db.collection(`${req.params.crudName}-cruds`).drop();
+  await db.collection(`${req.params.crudName}`).drop();
+  await ModelExist.findOneAndUpdate({ crudName: found.crudName }, { exists: false });
+
+  return res.status(200).json({
+    status: 'success',
+    message: 'Crud item deleted successfully',
+  });
 });

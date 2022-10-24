@@ -20,8 +20,8 @@ const checkPermission = catchAsync(async (req, res, next) => {
   if (docId) {
     //TODO: This can be another middleware
     const [correspondingPerm] = permissions.filter(permission => {
-      const { documentRef } = permission;
-      return documentRef === docId;
+      const { docRef } = permission;
+      return docRef === docId;
     });
 
     if (!correspondingPerm) throw new AppError(401, 'You are not permitted to access this data.');
@@ -35,20 +35,23 @@ const checkPermission = catchAsync(async (req, res, next) => {
   //check if permission contains the corresponding action
   permissions.forEach(permission => {
     const { collectionName, actions, docRef } = permission;
+
     if (collectionName !== collection)
       throw new AppError(401, 'Collection does not match. You are not permitted!');
 
-    if (docRef !== null) throw new AppError(401, 'You are not permitted to access this data');
+    if (docRef) {
+      throw new AppError(401, 'You are not permitted to access this data 1');
+    }
 
     if (req.method === 'GET') {
       if (!actions.includes('read'))
-        throw new AppError(401, 'You are not permitted to access this data.');
+        throw new AppError(401, 'You are not permitted to access this data. 2');
       next();
     }
 
     if (req.method === 'POST') {
       if (!actions.includes('create'))
-        throw new AppError(401, 'You are not permitted to create this data.');
+        throw new AppError(401, 'You are not permitted to create this data. 3');
       next();
     }
   });
