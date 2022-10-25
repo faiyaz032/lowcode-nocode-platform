@@ -10,7 +10,7 @@ export const create = catchAsync(async (req, res) => {
   const modelName = slugify(req.body.crudName, { lower: true });
 
   //create the requested crud model
-  const Model = createModel(`${modelName}-crud`);
+  const Model = createModel(`${modelName}-cruds`);
   const model = new Model({ ...req.body, crudName: modelName });
   await model.save();
 
