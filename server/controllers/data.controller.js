@@ -95,3 +95,33 @@ export const getById = catchAsync(async (req, res) => {
   //send response
   res.status(200).json({ status: 'success', message: 'Data fetched successfully', data });
 });
+
+export const updateData = catchAsync(async (req, res) => {
+  const { db } = mongoose.connection;
+  const { targetCollection, id } = req.params;
+
+  const found = await db.collection(targetCollection).findOne({ _id: mongoose.Types.ObjectId(id) });
+
+  if (!found) throw new AppError(404, `No data found`);
+
+  await db.collection(targetCollection).findOneAndUpdate(
+    { _id: mongoose.Types.ObjectId(id) },
+    {
+      $set: req.body,
+    }
+  );
+
+  return res.status(200).json({ status: 'success', message: 'Document updated successfully' });
+});
+
+export const deleteData = catchAsync(async (req, res) => {
+  const { db } = mongoose.connection;
+  const { targetCollection, id } = req.params;
+
+  const found = await db.collection(targetCollection).findOne({ _id: mongoose.Types.ObjectId(id) });
+  if (!found) throw new AppError(404, `No data found`);
+
+  await db.collection(targetCollection).findOneAndDelete({ _id: mongoose.Types.ObjectId(id) });
+
+  return res.status(200).json({ status: 'success', message: 'Document deleted successfully' });
+});

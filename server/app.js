@@ -1,6 +1,7 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import logger from 'morgan';
 import checkPermission from './middlewares/checkPermissions.js';
 import { defaultErrorHandler, notFoundHandler } from './middlewares/errorMiddlewares.js';
 import crudRouter from './routes/crud.routes.js';
@@ -9,6 +10,8 @@ import dataRouter from './routes/data.routes.js';
 const app = express();
 
 dotenv.config();
+
+app.use(logger('dev'));
 
 app.use(express.json());
 
