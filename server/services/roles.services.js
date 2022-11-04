@@ -1,4 +1,4 @@
-import Role from '../middlewares/models/Role.js';
+import Role from '../models/Role.js';
 
 export const createRole = async data => {
   try {

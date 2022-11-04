@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
-import ModelExist from '../middlewares/models/ModelExist.js';
+import ModelExist from '../models/ModelExist.js';
 import AppError from '../utils/AppError.js';
 import catchAsync from '../utils/catchAsync.js';
 import createModel from '../utils/createModel.js';

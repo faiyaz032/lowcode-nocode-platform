@@ -1,4 +1,4 @@
-import User from '../middlewares/models/User.js';
+import User from '../models/User.js';
 
 export const createUser = async data => {
   try {

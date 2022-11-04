@@ -1,4 +1,4 @@
-import Permission from '../middlewares/models/Permission.js';
+import Permission from '../models/Permission.js';
 
 export const createPermission = async data => {
   try {
