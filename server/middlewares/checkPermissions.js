@@ -7,6 +7,9 @@ const checkPermission = catchAsync(async (req, res, next) => {
   const { userId } = req.query;
   const { collection, docId } = req.params;
 
+  if (userId || collection)
+    throw new AppError(400, 'Please provide userId and collection with the request query ');
+
   //find the user
   const { role: roleTitle } = await getUser(userId);
 

@@ -19,14 +19,3 @@ userSchema.pre('save', async function (next) {
 const User = mongoose.model('User', userSchema);
 
 export default User;
-
-const gg = {
-  crudName: 'roles',
-  inputFields: [
-    {
-      label: 'Enter your role',
-      name: 'name',
-      type: 'text',
-    },
-  ],
-};

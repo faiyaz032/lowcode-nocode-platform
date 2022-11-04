@@ -1,4 +1,4 @@
-import ModelExist from '../models/ModelExist.js';
+import ModelExist from './models/ModelExist.js';
 import AppError from '../utils/AppError.js';
 import catchAsync from '../utils/catchAsync.js';
 
