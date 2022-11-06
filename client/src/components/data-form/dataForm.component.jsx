@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
+import UserContext from '../../utilities/contexts/userContexts/userContext';
 import DropDown from '../dropdown/dropdown.component';
-
-import Form from '../form/form.component';
+import Form from '../form/f orm.component';
 import Input from '../input/input.component';
 import './dataForm.styles.css';
-
-import UserContext from '../../utilities/contexts/userContexts/userContext';
 
 const DataForm = ({ data: { crudName, inputFields }, setValData }) => {
   const [docRefs, setDocRefs] = useState('');
