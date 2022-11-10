@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import AppError from '../utils/AppError.js';
+import canCreateCrudItem from '../utils/canCreateCrudItem.js';
 import catchAsync from '../utils/catchAsync.js';
 
 export const login = catchAsync(async (req, res) => {
@@ -21,5 +22,10 @@ export const login = catchAsync(async (req, res) => {
     expiresIn: '20h',
   });
 
-  res.status(200).json({ status: 'success', message: 'Login succeed', token });
+  res.status(200).json({
+    status: 'success',
+    message: 'Login succeed',
+    token,
+    canCreateCrudItem: await canCreateCrudItem(user.role),
+  });
 });

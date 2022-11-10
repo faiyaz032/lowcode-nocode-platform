@@ -4,6 +4,9 @@ import catchAsync from '../utils/catchAsync.js';
 
 const checkCrudItemPerm = catchAsync(async (req, res, next) => {
   const { role } = req.user;
+  console.log(role);
+
+  if (role === 'super-admin') return next();
 
   const { permissions } = await populateRole(role, 'permissions');
 
