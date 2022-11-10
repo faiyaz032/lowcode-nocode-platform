@@ -16,10 +16,10 @@ const isAuth = catchAsync(async (req, res, next) => {
   if (!decoded) throw new AppError(401, 'Authentication Failed');
 
   //attach the user info in req object
-  req.user = { _id: decoded._id, email: decoded.email };
+  req.user = { _id: decoded._id, email: decoded.email, role: decoded.role };
 
   //pass to next handler
-  next();
+  return next();
 });
 
 export default isAuth;

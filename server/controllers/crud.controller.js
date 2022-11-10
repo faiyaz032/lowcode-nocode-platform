@@ -4,6 +4,7 @@ import ModelExist from '../models/ModelExist.js';
 import AppError from '../utils/AppError.js';
 import catchAsync from '../utils/catchAsync.js';
 import createModel from '../utils/createModel.js';
+import getCrudItemsPromises from '../utils/getCrudItemsPromises.js';
 
 export const create = catchAsync(async (req, res) => {
   //slugify the model name to avoid any space
@@ -42,7 +43,15 @@ export const getAllCrudsItem = catchAsync(async (req, res) => {
     await ModelExist.find({ exists: true })
   ).map(collection => collection.crudName);
 
-  return res.status(200).json({ crudItems });
+  const result = await Promise.all(getCrudItemsPromises(crudItems));
+
+  const names = [];
+
+  result.forEach(crudItem => {
+    if (crudItem.showInTheMenu) names.push(crudItem.crudName);
+  });
+
+  return res.status(200).json({ crudItems: names });
 });
 
 export const deleteCrudItem = catchAsync(async (req, res) => {

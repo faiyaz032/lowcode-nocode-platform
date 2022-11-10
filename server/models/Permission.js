@@ -5,6 +5,7 @@ const permissionSchema = new mongoose.Schema({
   collectionName: { type: String, required: true }, //games
   docRef: { type: String, default: null },
   actions: [String], //read
+  canCreateCrudItem: { type: Boolean, default: false, required: true },
 });
 
 const Permission = mongoose.model('Permission', permissionSchema);

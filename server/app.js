@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import express from 'express';
 import logger from 'morgan';
 import { defaultErrorHandler, notFoundHandler } from './middlewares/errorMiddlewares.js';
-import isAuth from './middlewares/isAuth.js';
 import authRouter from './routes/auth.routes.js';
 import crudRouter from './routes/crud.routes.js';
 import dataRouter from './routes/data.routes.js';
@@ -23,9 +22,9 @@ app.use(
 );
 
 //!Just a check route to check the middleware. Will be removed later
-app.get('/check', isAuth, (req, res) => {
-  res.send('Playing valorant');
-});
+// app.get('/check/:rooms', isAuth, checkPermission, (req, res) => {
+//   res.send('Playing valorant');
+// });
 
 app.get('/', (req, res) => {
   res.send('Welcome to modular admin panel. DATABASE');

@@ -17,7 +17,7 @@ export const login = catchAsync(async (req, res) => {
   if (!isValidPassword) throw new AppError(401, 'Incorrect email or password');
 
   //TODO: Need to change the jwt secret
-  const token = jwt.sign({ _id: user._id, email: user.email }, 'SECRET', {
+  const token = jwt.sign({ _id: user._id, email: user.email, role: user.role }, 'SECRET', {
     expiresIn: '20h',
   });
 
