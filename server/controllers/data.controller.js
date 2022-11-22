@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import User from '../models/User.js';
 import { getCrudsModelData } from '../services/data.services.js';
 import { createPermission } from '../services/permissions.services.js';
 import { createRole } from '../services/roles.services.js';
@@ -65,6 +66,13 @@ export const get = catchAsync(async (req, res) => {
     //query data from the database
     const data = await db.collection(targetCollection).find().project(fieldsToReturn).toArray();
     //send response
+    return res
+      .status(200)
+      .json({ status: 'success', message: 'Data fetched successfully', data: data });
+  }
+
+  if (targetCollection === 'users') {
+    const data = await User.find(req.query).select({ password: 0, __v: 0 });
     return res
       .status(200)
       .json({ status: 'success', message: 'Data fetched successfully', data: data });

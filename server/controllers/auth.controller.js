@@ -27,5 +27,6 @@ export const login = catchAsync(async (req, res) => {
     message: 'Login succeed',
     token,
     canCreateCrudItem: await canCreateCrudItem(user.role),
+    userId: user._id,
   });
 });

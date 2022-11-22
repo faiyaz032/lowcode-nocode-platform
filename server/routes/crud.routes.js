@@ -12,6 +12,9 @@ router.post('/crud', isAuth, checkCrudItemPerm, checkModelExists, crudController
 
 router.get('/crud/:crudName', crudController.get);
 
+//add a new field
+router.patch('/crud/:crudName/:id', isAuth, crudController.addNewField);
+
 router.delete('/crud/:crudName', crudController.deleteCrudItem);
 
 export default router;

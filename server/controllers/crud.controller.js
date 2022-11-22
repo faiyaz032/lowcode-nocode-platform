@@ -7,7 +7,7 @@ import createModel from '../utils/createModel.js';
 import getCrudItemsPromises from '../utils/getCrudItemsPromises.js';
 
 export const create = catchAsync(async (req, res) => {
-  //slugify the model name to avoid any space
+  //slugify the model name to avoid a+ny space
   const modelName = slugify(req.body.crudName, { lower: true });
 
   //create the requested crud model
@@ -52,6 +52,39 @@ export const getAllCrudsItem = catchAsync(async (req, res) => {
   });
 
   return res.status(200).json({ crudItems: names });
+});
+
+export const addNewField = catchAsync(async (req, res) => {
+  const { db } = mongoose.connection;
+  console.log(req.body);
+
+  if (!req.params.crudName || !req.params.id) {
+    throw new AppError(400, 'Please provide the crudName and ID with the request param');
+  }
+
+  const found = await db
+    .collection(`${req.params.crudName}-cruds`)
+    .findOne({ _id: mongoose.Types.ObjectId(req.params.id) });
+
+  if (!found) throw new AppError(404, `No data found with id`);
+
+  await db.collection(`${req.params.crudName}-cruds`).updateOne(
+    {
+      _id: mongoose.Types.ObjectId(req.params.id),
+    },
+    {
+      $push: { inputFields: { ...req.body } },
+    }
+  );
+
+  await db.collection(`${req.params.crudName}`).updateMany(
+    {},
+    {
+      $set: { [req.body.name]: 'N/A' },
+    }
+  );
+
+  return res.status(200).json({ status: 'success', message: 'New field added successfully' });
 });
 
 export const deleteCrudItem = catchAsync(async (req, res) => {
