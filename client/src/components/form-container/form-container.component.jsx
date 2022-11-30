@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useContext } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 
 // import Form from '../form/form.component';
@@ -6,50 +9,30 @@ import FormIcon from "../../images/contact-form.png"
 // import Input from '../input/input.component';
 // import CrudForm from '../crud-form/crudForm.component';
 
+import BearerContext from '../../utilities/contexts/bearerContext/bearerContext';
+import LogoutBtn from '../logout-btn/logoutBtn.component';
+
 import "./form-container.styles.css";
 // import FormForCrud from '../formForCrud/formForCrud.component';
 
-const FormContainer = ({title, setSideMenus, sideMenus, DataForm, data, setValData}) => {
+const FormContainer = ({title, setSideMenus, sideMenus, DataForm, data, setValData, formTitle}) => {
+    const navigate = useNavigate();
+    const {bearer} = useContext(BearerContext)
+    useEffect(() => {
+        if(!bearer) {
+            navigate("/login")
+        }
+    })
+
     const [showForm, toggleShowForm] = useState(false);
-    // const [inputCount, incrsInputCount] = useState(1);
-    // const mtArray = Array(inputCount).fill("el")
-    // const [value, setValue] = useState({inputFields: []})
-    // const [elArr, addToElArr] = useState([CrudForm])
-
-    // const deleteCrudForm = (e) => {
-    //     const indx = Number(e.target.parentElement.parentElement.dataset.indx)
-    //     const newElArr = elArr.filter((_, i) => indx !== i);
-    //     const newValue = value.inputFields.filter((_, i) => indx !== i);
-
-    //     addToElArr([...newElArr]);
-    //     setValue({
-    //         ...value,
-    //         inputFields: [...newValue]
-    //     });
-    // }
-
-    // const sendData = (e) => {
-    //     e.preventDefault();
-    //     // axios({
-    //     //     method: "post",
-    //     //     url: "https://modular-ap.herokuapp.com/api/crud",
-    //     //     data: {...value}
-    //     // })
-    //     fetch("https://modular-ap.herokuapp.com/api/crud", {
-    //         method: "POST",
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json'
-    //         }, 
-    //         body: JSON.stringify(value)
-    //     })
-    //     .then(res => res.json())
-    //     .then(data => console.log(data))
-    // }
 
     return (
         <div className='form-container'>
-            <h1 className='form-title'>Create {title}</h1>
+            <div className="header">
+                <h1 className='form-title'>{formTitle ? formTitle : `Create ${title}`}</h1>
+
+                <LogoutBtn />
+            </div>
             <button className='form-toggle-btn' type='button' onClick={() => toggleShowForm(!showForm)}><img alt='form-icon' className='form-icon' src={FormIcon}/> Create a Form</button>
             {
             showForm 
@@ -65,7 +48,7 @@ const FormContainer = ({title, setSideMenus, sideMenus, DataForm, data, setValDa
             //             <button type='submit' className='btn-submit' onClick={(e) => {sendData(e)}}>Submit</button>
             //         </div>
             // </Form>
-            <DataForm title={title} setSideMenus={setSideMenus} sideMenus={sideMenus} data={data} setValData={setValData}/>
+            <DataForm title={title} setSideMenus={setSideMenus} sideMenus={sideMenus} data={data} setValData={setValData} type={formTitle}/>
             : 
             ""
             }

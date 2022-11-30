@@ -51,15 +51,27 @@ const checkPermission = catchAsync(async (req, res, next) => {
       throw new AppError(401, 'You are not permitted to access this data 1');
     }
 
-    if (req.method === 'GET') {
+    if (req.method == 'GET') {
       if (!actions.includes('read'))
         throw new AppError(401, 'You are not permitted to access this data. 2');
       return next();
     }
 
-    if (req.method === 'POST') {
+    if (req.method == 'POST') {
       if (!actions.includes('create'))
         throw new AppError(401, 'You are not permitted to create this data. 3');
+      return next();
+    }
+
+    if (req.method == 'PATCH' || req.method == 'PUT') {
+      if (!actions.includes('edit'))
+        throw new AppError(401, 'You are not permitted to edit this data. 3');
+      return next();
+    }
+
+    if (req.method == 'DELETE') {
+      if (!actions.includes('delete'))
+        throw new AppError(401, 'You are not permitted to delete this data. 3');
       return next();
     }
   });
