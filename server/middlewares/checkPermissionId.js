@@ -1,7 +1,7 @@
+import AppError from '../utils/AppError.js';
 import catchAsync from '../utils/catchAsync.js';
 
-const checkPermissionId = catchAsync(async (req, res) => {
-  
+const checkPermissionId = catchAsync(async (req, res, next) => {
   const [correspondingPerm] = permissions.filter(permission => {
     const { docRef } = permission;
     return docRef === docId;

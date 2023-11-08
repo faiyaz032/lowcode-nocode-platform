@@ -24,7 +24,7 @@ const CrudItem = () => {
         setLoader(true);
         // if(!initItem) {      
         try {
-            fetch(`https://modular-ap.herokuapp.com/api/crud/${crudItemLow}`, {
+            fetch(`${process.env.REACT_APP_SEVER_URL}/api/crud/${crudItemLow}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${bearer}`
@@ -36,7 +36,7 @@ const CrudItem = () => {
                 setLoader(false)
             })
         
-            fetch(`https://modular-ap.herokuapp.com/api/data/${crudItemLow}`, {
+            fetch(`${process.env.REACT_APP_SEVER_URL}/api/data/${crudItemLow}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${bearer}`
