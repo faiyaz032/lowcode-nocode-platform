@@ -21,11 +21,6 @@ app.use(
   })
 );
 
-//!Just a check route to check the middleware. Will be removed later
-// app.get('/check/:rooms', isAuth, checkPermission, (req, res) => {
-//   res.send('Playing valorant');
-// });
-
 app.get('/', (req, res) => {
   res.send('Welcome to modular admin panel. DATABASE');
 });
