@@ -37,6 +37,7 @@ function App() {
               alert('Your login has expired. Please logout and login again');
               return;
             }
+
             setSideMenus([...data.crudItems]);
           });
       } else {

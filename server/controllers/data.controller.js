@@ -98,7 +98,9 @@ export const getById = catchAsync(async (req, res) => {
     throw new AppError(400, 'Collection does not exists');
 
   //get the data from database
-  const data = await db.collection(targetCollection).findOne({ _id: mongoose.Types.ObjectId(id) });
+  const data = await db
+    .collection(targetCollection)
+    .findOne({ _id: new mongoose.Types.ObjectId(id) });
 
   //send response
   res.status(200).json({ status: 'success', message: 'Data fetched successfully', data });
@@ -108,12 +110,14 @@ export const updateData = catchAsync(async (req, res) => {
   const { db } = mongoose.connection;
   const { targetCollection, id } = req.params;
 
-  const found = await db.collection(targetCollection).findOne({ _id: mongoose.Types.ObjectId(id) });
+  const found = await db
+    .collection(targetCollection)
+    .findOne({ _id: new mongoose.Types.ObjectId(id) });
 
   if (!found) throw new AppError(404, `No data found`);
 
   await db.collection(targetCollection).findOneAndUpdate(
-    { _id: mongoose.Types.ObjectId(id) },
+    { _id: new mongoose.Types.ObjectId(id) },
     {
       $set: req.body,
     }
@@ -126,10 +130,12 @@ export const deleteData = catchAsync(async (req, res) => {
   const { db } = mongoose.connection;
   const { targetCollection, id } = req.params;
 
-  const found = await db.collection(targetCollection).findOne({ _id: mongoose.Types.ObjectId(id) });
+  const found = await db
+    .collection(targetCollection)
+    .findOne({ _id: new mongoose.Types.ObjectId(id) });
   if (!found) throw new AppError(404, `No data found`);
 
-  await db.collection(targetCollection).findOneAndDelete({ _id: mongoose.Types.ObjectId(id) });
+  await db.collection(targetCollection).findOneAndDelete({ _id: new mongoose.Types.ObjectId(id) });
 
   return res.status(200).json({ status: 'success', message: 'Document deleted successfully' });
 });
