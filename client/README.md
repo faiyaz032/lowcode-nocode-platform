@@ -3,7 +3,7 @@
 **Description:**
 The purpose of this Modular Admin Panel is to control the data and interactions inside a game engine. It offers an easy-to-use interface for managing user roles and permissions dynamically in addition to creating, reading, updating, and deleting data. Super-admins can utilize the system to create intricate data structures, instantly manage users, roles, and permissions, and easily link it with the game engine via API calls and visualize in web client.
 
-### Live Link: https://6520141bcf4ea200735dadb5--calm-speculoos-1f865c.netlify.app/
+### Live Link: https://animated-speculoos-af749f.netlify.app/
 
 ### Credentials for login:
 
